@@ -7,8 +7,15 @@ import vehicle
 VehicleList = []
 numVehicles = 9
 
+os.chdir("..")
 cwd = os.getcwd()
-data_path = cwd + '/Data'
+data_path = cwd + '/data'
+
+# Get back to src directory
+os.chdir(cwd + '/src')
+
+
+
 
 data_filename = 'SampleData0.csv'
 
