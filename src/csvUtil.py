@@ -20,8 +20,8 @@ class CSV_Util:
 		self.logwriter = csv.writer(logfile, delimiter=',', quotechar='\n')
 
 		self.logwriter.writerow( ['Date', 'Start Time', 'End Time', 'Duration', \
-									'Charge Time', 'Energy', 'Charge Rate', 	\
-									'Laxity' ] )
+									'Charge Time', 'ID', 'Energy', 				\
+									'Charge Rate', 	'Laxity' ] )
 
 		# Switch to data directory
 		self.dataPath = data_path
@@ -66,6 +66,7 @@ class CSV_Util:
 									vehicle.endTime.strftime('%H:%M'),			\
 									vehicle.duration,							\
 									vehicle.chargeTimeNeeded,					\
+									vehicle.id, 								\
 									vehicle.chargeReq,							\
 									vehicle.maxRate, 							\
 									vehicle.laxity ])

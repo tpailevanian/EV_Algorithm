@@ -32,12 +32,14 @@ csv = CSV_Util( data_path, data_filename)
 for i in range( numVehicles ):
 
 	newVehicle = csv.addVehicle()
+	newVehicle.id = i 
 	allVehicles.append( newVehicle )
 
 
 # Simulation takes place in while loop
 while (timer_end - timer).total_seconds() > 0.0:
 	
+
 
 	timer = timer + datetime.timedelta(0,60)
 	print timer.strftime("Date: %m/%d/%y Time: %H:%M")
