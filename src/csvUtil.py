@@ -44,6 +44,8 @@ class CSV_Util:
 
 		# Read one additional row from the data and return the vehicle parameters
 		row = next(self.sampleData)
+
+		# Process the data
 		start_time = datetime.datetime.strptime(row[1], "%m/%d/%y %H:%M")
 		end_time = datetime.datetime.strptime(row[3], "%m/%d/%y %H:%M")
 		duration = datetime.datetime.strptime(row[5], '%H:%M:%S')
@@ -54,9 +56,8 @@ class CSV_Util:
 		charge_time_seconds = ( charge_time - zero_time ).total_seconds()
 		charge_rate = energy_needed / charge_time_seconds
 
+		# Create Vehicle object and return it with given parameters
 		return vehicle.Vehicle( start_time, end_time, energy_needed, charge_rate )
-		#return [ start_time, end_time, duration.time(), charge_time, \
-		#			energy_needed, charge_rate ]
 
 	def exportVehicletoCSV( self, vehicle ):
 

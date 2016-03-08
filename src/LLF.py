@@ -2,18 +2,8 @@ import vehicle
 
 allVehicles = []
 
-def updateLLF():
+def updateLLF( chargeQueue, currentlyCharging, doneCharging ):
 
-	chargeQueue = []
-	doneCharging = []
-	currentlyCharging = []
-
-
-	for vehicle in currentlyCharging:
-
-		# add charge to the vehicle
-        if vehicle is not None:
-            vehicle.currentCharge += ( vehicle.chargeRate ) * 60.0 # charge rate is in charge/second
 
     for i, vehicle in enumerate( allVehicles ):
     	if vehicle is not None:
@@ -33,10 +23,9 @@ def updateLLF():
 					currentlyCharging.append[(vehicle.id, vehicle.laxity)]
 					totChrgRate += vehicle.chargeRate
 
-def onArrival(vehicle):
+	for vehicle in currentlyCharging:
 
-	allVehicles.append[vehicle]
-	vehicle.id = length(allVehicles)
-
-	sorted(chargingQueue, )
+		# add charge to the vehicle
+        if vehicle is not None:
+            vehicle.currentCharge += ( vehicle.chargeRate ) * 60.0 # charge rate is in charge/second
 

@@ -12,6 +12,7 @@ class Vehicle:
         self.chargeReq          =       chargeReq
         self.maxRate            =       maxRate
         self.chargeRate         =       None
+        self.charged            =       0 
 
         self.id                 =       None # program will set ID upon initialization
 
@@ -29,9 +30,12 @@ class Vehicle:
        
     # update vehicle laxity 
     def updateLaxity( self, currentTime ):
-        timeToCharge    =  ( self.chargeNeeded - self.currentCharge ) / self.chargeRate
-        totalTime       =  self.depTime - currentTime
-        looseTime       =  totalTime - chargeTimeNeeded
+        timeLeft =  self.duration - (( currentTime - arrivalTime ).total_seconds() / 60 )
+        
+        self.chargeTimeNeeded   =       math.ceil(( float(self.chargeReq)- float(self.charged)) / (60.0 * self.maxRate) )  
+                                          
+        self.looseTime          =       timeLeft - self.chargeTimeNeeded
+        self.laxity             =       self.looseTime / timeLeft
 
         # in case time ends up, we can't divide by 0
         if totalTime == 0:
@@ -39,7 +43,6 @@ class Vehicle:
         else:
             self.laxity =  looseTime / totalTime
 
-    def timeLeftToCharge( self ):
-        return math.ceil( 60 * ( float(self.chargeReq) - float(self.currentCharge)  ) / self.maxRate )
+            
 
 
