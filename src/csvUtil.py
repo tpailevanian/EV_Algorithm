@@ -21,7 +21,7 @@ class CSV_Util:
 
 		self.logwriter.writerow( ['Date', 'Start Time', 'End Time', 'Duration', \
 									'Charge Time', 'ID', 'Energy', 				\
-									'Charge Rate', 	'Laxity' ] )
+									'Charge Rate', 	'Remaining Charge', 'Laxity' ] )
 
 		# Switch to data directory
 		self.dataPath = data_path
@@ -69,6 +69,7 @@ class CSV_Util:
 									vehicle.id, 								\
 									vehicle.chargeReq,							\
 									vehicle.maxRate, 							\
+									vehicle.chargeReq - vehicle.charged, 		\
 									vehicle.laxity ])
 
 

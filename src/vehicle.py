@@ -11,7 +11,7 @@ class Vehicle:
         self.endTime            =       endTime
         self.chargeReq          =       chargeReq
         self.maxRate            =       maxRate
-        self.chargeRate         =       None
+        self.chargeRate         =       0
         self.charged            =       0 
 
         self.id                 =       None # program will set ID upon initialization
@@ -20,7 +20,7 @@ class Vehicle:
                                         # want to use one minutes rather than seconds
         self.duration           =       ( self.endTime - self.arrivalTime ).total_seconds() / 60.0 
 
-                                        # assuming charge rate is in charge/second
+                                        # assuming charge rate is in kWh/second
                                         # chargeTimeNeeded is in minutes  
         self.chargeTimeNeeded   =       math.ceil( float(self.chargeReq) / (60.0 * self.maxRate) )  
                                           
@@ -30,19 +30,29 @@ class Vehicle:
        
     # update vehicle laxity 
     def updateLaxity( self, currentTime ):
-        timeLeft =  self.duration - (( currentTime - arrivalTime ).total_seconds() / 60 )
+        timeLeft =  self.duration - (( currentTime - self.arrivalTime ).total_seconds() / 60.0 )
         
         self.chargeTimeNeeded   =       math.ceil(( float(self.chargeReq)- float(self.charged)) / (60.0 * self.maxRate) )  
                                           
         self.looseTime          =       timeLeft - self.chargeTimeNeeded
-        self.laxity             =       self.looseTime / timeLeft
 
-        # in case time ends up, we can't divide by 0
-        if totalTime == 0:
-            self.laxity = 1
+        # Check for dividing by zero 
+        if timeLeft == 0 and self.chargeTimeNeeded > 0:
+            pass    #do nothing, just keep previous laxity value
+        
+        elif timeLeft == 0 and self.chargeTimeNeeded == 0:
+            self.laxity         =       0
+        
         else:
-            self.laxity =  looseTime / totalTime
+            self.laxity         =       self.looseTime / timeLeft
 
-            
+    def chargeVehicle( self, rate ):
+
+        if (self.chargeReq - self.charged) <= ( 60.0 * rate ):
+                self.charged = self.chargeReq
+        else:
+            self.charged += ( 60.0 * rate )
+
+
 
 

@@ -1,31 +1,48 @@
+from operator import attrgetter
+from llf_constants import *
+from vehicleLists import *
 import vehicle
 
-allVehicles = []
-
-def updateLLF( chargeQueue, currentlyCharging, doneCharging ):
+def updateLLF( currentTime, lists ):
 
 
-    for i, vehicle in enumerate( allVehicles ):
-    	if vehicle is not None:
+	for vehicle in lists.allVehicles:
 
-    		if vehicle.currentCharge >= chargeNeeded:
+		if vehicle.arrivalTime == currentTime:
+			lists.chargeQueue.append( vehicle )
 
-    			allVehicles.stopCharging(i) 	# vehicle is done charging so stop
-    												#	stop including it in the calculation
-    			chargeQueue.remove(vehicle)
+	if lists.chargeQueue is not None:
+		lists.chargeQueue = sorted(lists.chargeQueue, key=attrgetter('laxity'))
+	
+	demand = 0
 
-    			doneCharging.append[vehicle.id]	# keep track of vehicles that are done charging
-			
-			# Make sure the station does not draw too much power
-			totChrgRate = 0
-			for vehicle in chargingQueue:
-				if vehicle.chargeRate + totChrgRate < totPwr:
-					currentlyCharging.append[(vehicle.id, vehicle.laxity)]
-					totChrgRate += vehicle.chargeRate
+	# Reset currently charging list 
+	lists.currentlyCharging = [] 
 
-	for vehicle in currentlyCharging:
+	for vehicle in lists.chargeQueue[:]:
 
-		# add charge to the vehicle
-        if vehicle is not None:
-            vehicle.currentCharge += ( vehicle.chargeRate ) * 60.0 # charge rate is in charge/second
+		vehicle.updateLaxity( currentTime )
 
+		#if ((vehicle.chargeReq - vehicle.charged)  <= .00001 ) or \
+		if 	(vehicle.endTime == currentTime):
+
+			remove_id = vehicle.id
+			lists.doneCharging.append( vehicle )
+
+			try:
+				lists.chargeQueue = [item for item in lists.chargeQueue if item.id != remove_id ]
+			except ValueError:
+				index = -1
+	
+	for vehicle in lists.chargeQueue:	
+		if ( vehicle.maxRate + demand ) <= ( float(max_pwr) / 3600.0 ):
+			demand = vehicle.maxRate + demand
+			lists.currentlyCharging.append( vehicle )
+			vehicle.chargeRate = vehicle.maxRate
+
+	for vehicle in lists.currentlyCharging:
+		vehicle.chargeVehicle( vehicle.maxRate )
+
+	print "length of the chargeQueue is %d" %len(lists.chargeQueue)
+	print "length of the currentlyCharging is %d" %len(lists.currentlyCharging)
+	print "length of the doneCharging is %d" %len(lists.doneCharging)
