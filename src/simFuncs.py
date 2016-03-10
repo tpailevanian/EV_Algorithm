@@ -1,5 +1,5 @@
 from vehicleLists import *
-from llf_constants import *
+from sim_constants import *
 from numpy import arange
 from matplotlib.dates import HourLocator, MinuteLocator, DateFormatter
 import matplotlib.pyplot as plt
@@ -50,13 +50,13 @@ def plotPower( sim_data, path ):
 
 	fig.autofmt_xdate()
 
-	plt.ion()
+	#plt.ion()
 
 	plt.show()
 
 	fig.savefig((path+'/power_demand.jpg'))
 
-	plt.close(fig) 
+	#plt.close(fig) 
 
 def plotLaxity( sim_data, path ):
 
@@ -81,7 +81,7 @@ def plotLaxity( sim_data, path ):
 
 	ax.set_xlim(t[0], t[-1])
 
-	fig.suptitle('Power Demand', fontsize=20)
+	fig.suptitle('Average Laxity', fontsize=20)
 	plt.xlabel('Time HH:MM', fontsize = 14)
 	plt.ylabel('Average Laxity', fontsize=14)
 
@@ -96,11 +96,11 @@ def plotLaxity( sim_data, path ):
 
 	fig.autofmt_xdate()
 
-	plt.ion()
+	#plt.ion()
 
 	plt.show()
 
 	fig.savefig((path+'/average_laxity.jpg'))
 
-	plt.close(fig) 
+	#plt.close(fig) 
 

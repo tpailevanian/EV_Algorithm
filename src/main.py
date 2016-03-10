@@ -1,7 +1,7 @@
 from csvUtil import CSV_Util
 from LLF import *
 from IC import *
-from llf_constants import *
+from sim_constants import *
 from vehicleLists import *
 from simulationData import *
 from simFuncs import *
@@ -22,14 +22,11 @@ data_path = cwd + '/data'
 # Get back to src directory
 os.chdir(cwd + '/src')
 
-data_filename = 'SampleData0.csv'
-
 # Create simulation clock
 timer = datetime.datetime.strptime('%s %s' % ( simulation_start_date, simulation_start_time ), \
 													'%m/%d/%y %H:%M')
 timer_end = datetime.datetime.strptime('%s %s' % ( simulation_end_date, simulation_end_time ), \
 													'%m/%d/%y %H:%M')
-
 
 # Setup CSV utility
 data = CSV_Util( data_path, data_filename)
