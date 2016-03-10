@@ -9,8 +9,7 @@ def updateLLF( currentTime, lists ):
 	for vehicle in lists.allVehicles:
 
 		if vehicle.arrivalTime == currentTime:
-			# For debugging
-			#print 'I ADDED A CARRRRRRRRRRRRRRRRRRRRRRRR!!!!!!!!!!!!!!!!!'
+
 			lists.chargeQueue.append( vehicle )
 
 	if lists.chargeQueue is not None:
@@ -46,8 +45,9 @@ def updateLLF( currentTime, lists ):
 		vehicle.chargeVehicle( vehicle.maxRate )
 
 	# Update the total power demand for this time instance
-	lists.demand = demand
+	lists.demand = demand * 3600
 
-	print "length of the chargeQueue is %d" %len(lists.chargeQueue)
-	print "length of the currentlyCharging is %d" %len(lists.currentlyCharging)
-	print "length of the doneCharging is %d" %len(lists.doneCharging)
+	# FOR DEBUG
+	#print "length of the chargeQueue is %d" %len(lists.chargeQueue)
+	#print "length of the currentlyCharging is %d" %len(lists.currentlyCharging)
+	#print "length of the doneCharging is %d" %len(lists.doneCharging)

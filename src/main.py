@@ -59,7 +59,13 @@ while (timer_end - timer).total_seconds() > 0.0:
 	timer = timer + datetime.timedelta( 0, 60 )
 	print timer.strftime("Date: %m/%d/%y Time: %H:%M")
 
-for vehicle in range( numVehicles):
+# FOR DEBUG
+#print len(llf_lists.allVehicles)
+#print len(llf_lists.doneCharging)
+#print len(ic_lists.allVehicles)
+#print len(ic_lists.doneCharging)
+
+for vehicle in range( numVehicles ):
 
 	#data.exportVehicletoCSV( llf_lists.allVehicles[ vehicle ] )
 	data.exportVehicletoCSV( llf_lists.doneCharging[ vehicle ] )
@@ -68,7 +74,9 @@ for vehicle in range( numVehicles):
 
 # Finished with simulation so log data and generate plots
 data.exportSimtoCSV( sim_data )
-plotPower( sim_data )
+plotPower( sim_data, data.getLogPath() )
+plotLaxity( sim_data, data.getLogPath() )
+
 
 
 

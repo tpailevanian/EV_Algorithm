@@ -39,11 +39,12 @@ def updateIC( currentTime, lists ):
 		vehicle.chargeRate = rate
 		vehicle.chargeVehicle( rate )
 
-	lists.demand = demand
+	lists.demand = demand * 3600
 
-	print "length of the chargeQueue is %d" %len(lists.chargeQueue)
-	print "length of the currentlyCharging is %d" %len(lists.currentlyCharging)
-	print "length of the doneCharging is %d" %len(lists.doneCharging)
+	# FOR DEBUG
+	#print "length of the chargeQueue is %d" %len(lists.chargeQueue)
+	#print "length of the currentlyCharging is %d" %len(lists.currentlyCharging)
+	#print "length of the doneCharging is %d" %len(lists.doneCharging)
 
 def averageLaxity( lists ):
 

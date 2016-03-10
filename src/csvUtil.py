@@ -80,7 +80,10 @@ class CSV_Util:
 		
 		zero_time = datetime.datetime.strptime('00:00:00', '%H:%M:%S')
 		charge_time_seconds = ( charge_time - zero_time ).total_seconds()
-		charge_rate = energy_needed / charge_time_seconds
+		if charge_time_seconds != 0:
+			charge_rate = energy_needed / charge_time_seconds
+		else:
+			charge_rate = 0.00001
 
 		# Create Vehicle object and return it with given parameters
 		return vehicle.Vehicle( start_time, end_time, energy_needed, charge_rate )
