@@ -1,7 +1,7 @@
 
 class VehicleLists:
 
-    def __init__( self ):
+    def __init__( self, algorithm ):
 
         # Vehicle Lists
         self.allVehicles = []  # contains all the vehicles that have 
@@ -12,6 +12,9 @@ class VehicleLists:
                                                     #   are currently charging
         self.doneCharging = []    # contains all the vehicles that have 
                                             #   finished charging or have departed
+        self.algorithm_type = algorithm # contains the algorithm used for the lists
+
+        self.demand = 0         # Initialize power demand to 0
 
 
 

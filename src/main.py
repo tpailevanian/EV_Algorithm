@@ -1,13 +1,19 @@
 from csvUtil import CSV_Util
 from LLF import *
+from IC import *
 from llf_constants import *
+from vehicleLists import *
+from simulationData import *
+from simFuncs import *
 import datetime
 import os
 import vehicle
-from vehicleLists import *
+import copy
 
 # Create vehicle lists
-lists = VehicleLists()
+llf_lists = VehicleLists( 'llf' )	# Lists for the LLF simulation
+ic_lists = VehicleLists( 'ic' )	# Lists for the Instant Charging simulation
+sim_data = SimulationData()		# List of simulation data
 
 os.chdir("..")
 cwd = os.getcwd()
@@ -26,27 +32,43 @@ timer_end = datetime.datetime.strptime('%s %s' % ( simulation_end_date, simulati
 
 
 # Setup CSV utility
-csv = CSV_Util( data_path, data_filename)
+data = CSV_Util( data_path, data_filename)
 
 # Add vehicles to the simulation
 for i in range( numVehicles ):
 
-	newVehicle = csv.addVehicle()
+	newVehicle = data.addVehicle()
 	newVehicle.id = i 
-	lists.allVehicles.append( newVehicle )
+	llf_lists.allVehicles.append( copy.deepcopy( newVehicle ))
+	ic_lists.allVehicles.append( copy.deepcopy( newVehicle ))
 
 # Simulation takes place in while loop
 while (timer_end - timer).total_seconds() > 0.0:
 	
-	updateLLF( timer, lists)
-
-	timer = timer + datetime.timedelta( 0, sim_time_delta * 60 )
+	updateIC( timer, ic_lists )
+	updateLLF( timer, llf_lists )
+	
+	sim_data.time.append( timer )
+	sim_data.llf_demand.append( llf_lists.demand )
+	sim_data.llf_avg_laxity.append( averageLaxity(llf_lists) )
+	sim_data.ic_demand.append( ic_lists.demand )
+	sim_data.ic_avg_laxity.append( averageLaxity(ic_lists) )
+	
+	
+	
+	timer = timer + datetime.timedelta( 0, 60 )
 	print timer.strftime("Date: %m/%d/%y Time: %H:%M")
 
 for vehicle in range( numVehicles):
 
-	#csv.exportVehicletoCSV( lists.allVehicles[ vehicle ] )
-	csv.exportVehicletoCSV( lists.doneCharging[ vehicle ] )
+	#data.exportVehicletoCSV( llf_lists.allVehicles[ vehicle ] )
+	data.exportVehicletoCSV( llf_lists.doneCharging[ vehicle ] )
+	#data.exportVehicletoCSV( ic_lists.allVehicles[ vehicle ] )
+	data.exportVehicletoCSV( ic_lists.doneCharging[ vehicle ] )
+
+# Finished with simulation so log data and generate plots
+data.exportSimtoCSV( sim_data )
+plotPower( sim_data )
 
 
 
